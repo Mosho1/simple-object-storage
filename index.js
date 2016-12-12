@@ -49,7 +49,7 @@ const getStore = (storageName, db) => {
 
         update(updater) {
             store.cache = updater(store.cache);
-            store.save();
+            store.saveSync();
             return store.cache;
         },
 
@@ -98,7 +98,7 @@ const getDb = (dbName) => {
         },
 
         set: promisify((name, data, cb) => {
-            return fs.outputFile(db.getFilename(name), JSON.stringify(data), cb);
+            fs.outputFile(db.getFilename(name), JSON.stringify(data), cb);
         }),
 
         setSync(name, data) {

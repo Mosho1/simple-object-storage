@@ -101,30 +101,33 @@ describe('getStore', () => {
             store.set('key', 'value');
             expect(store.get('key')).to.equal('value');
             setTimeout(() => {
-                expect(dbMock.set).to.have.property('callCount', 1);
+                expect(dbMock.setSync).to.have.property('callCount', 1);
                 cb();
             }, 100);
+        });
+
+        it('async', () => {
+            // everything is cached, so no async methods
+        });
     });
 
-    it('async', () => {
-        // everything is cached, so no async methods
+    it('should debounce save', (cb) => {
+        for (let i = 0; i < 5; i++) {
+            store.save();
+            store.saveSync();
+        }
+
+        setTimeout(() => {
+            expect(dbMock.set).to.have.property('callCount', 1);
+            expect(dbMock.setSync).to.have.property('callCount', 1);
+            cb();
+        }, 100);
     });
-});
 
-it('should debounce save', (cb) => {
-    for (let i = 0; i < 5; i++) {
-        store.save();
-        store.saveSync();
-    }
-
-    setTimeout(() => {
-        expect(dbMock.set).to.have.property('callCount', 1);
-        expect(dbMock.setSync).to.have.property('callCount', 1);
-        cb();
-    }, 100);
-
-
-});
-
-
+    it('should delete', () => {
+        store.set('key', 'value');
+        expect(store.get('key')).to.equal('value');
+        store.delete('key');
+        expect(store.get('key')).to.be.undefined;
+    });
 });
