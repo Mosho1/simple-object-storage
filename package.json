@@ -1,6 +1,6 @@
 {
   "name": "simple-object-storage",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "simple persistent json db for node",
   "main": "index.js",
   "scripts": {
